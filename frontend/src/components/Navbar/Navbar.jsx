@@ -1,20 +1,19 @@
 import React from 'react'
-import wheelwayLogo from "../../assets/wheelway-logo.jpeg"
 
 const Navbar = () => {
   return (
     
-    <nav className='w-screen flex justify-around min-h-12 h-[6vh] bg-white drop-shadow-lg text-black items-center'>
+    <nav className='w-screen flex justify-around min-h-12 h-[7vh] bg-white drop-shadow-lg text-black items-center fixed top-0'>
 
         <div>
-          <img src={wheelwayLogo} alt="WheelWay Logo" className='h-[5vh]'/>
+          PEDALS
         </div>
 
-        <div className='space-x-2'>
+        <div className='space-x-4'>
 
-            <button className='text-white bg-black px-2 py-1 rounded-md hover:bg-zinc-200 hover:text-black ho duration-200'>Register</button>
+            <button className='text-white bg-black px-4 py-2 rounded-md hover:bg-zinc-200 hover:text-blue-700 ho duration-200'>Register</button>
 
-            <button className='text-white bg-black px-2 py-1 rounded-md hover:bg-zinc-200 hover:text-black ho duration-200'>Login</button>
+            <button className='text-white bg-black px-4 py-2 rounded-md hover:bg-zinc-200 hover:text-blue-700 ho duration-200'>Login</button>
 
         </div>
 
