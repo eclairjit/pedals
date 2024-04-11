@@ -1,11 +1,14 @@
 import React from 'react'
+import wheelwayLogo from "../../assets/wheelway-logo.jpeg"
 
 const Navbar = () => {
   return (
     
-    <nav className='w-screen flex justify-around h-[6vh] bg-white drop-shadow-lg text-black items-center'>
+    <nav className='w-screen flex justify-around min-h-12 h-[6vh] bg-white drop-shadow-lg text-black items-center'>
 
-        <div>Logo</div>
+        <div>
+          <img src={wheelwayLogo} alt="WheelWay Logo" className='h-[5vh]'/>
+        </div>
 
         <div className='space-x-2'>
 
