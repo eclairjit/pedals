@@ -1,16 +1,16 @@
-import { useState } from 'react'
-import Login from "./pages/Login/Login"
-import Register from "./pages/Register/Register"
-import Home from "./pages/Home/Home"
+import { useState } from "react";
+import { Outlet } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
 
   return (
     <>
-    <Home />
+      <Outlet />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
