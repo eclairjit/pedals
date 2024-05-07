@@ -1,7 +1,19 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const loginUser = (data) => {
+    console.log(data.username); //TBR
+  };
+
   return (
     <section>
       <div className="grid grid-cols-1 lg:grid-cols-2">
@@ -14,14 +26,13 @@ const Login = () => {
               Don&apos;t have an account?{" "}
               <Link
                 to="/"
-                href="#"
-                title=""
+                title="register"
                 className="font-semibold text-black transition-all duration-200 hover:underline"
               >
                 Create a free account
               </Link>
             </p>
-            <form className="mt-8">
+            <form className="mt-8" onSubmit={handleSubmit(loginUser)}>
               <div className="space-y-5 min-w-80 md:min-w-96">
                 <div>
                   <label
@@ -36,7 +47,14 @@ const Login = () => {
                       className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                       type="text"
                       placeholder="Username"
+                      id="username"
+                      {...register("username", { required: true })}
                     ></input>
+                    {errors.username && (
+                      <p className="text-red-700 mt-1 text-sm">
+                        Username is required.
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div>
@@ -54,7 +72,14 @@ const Login = () => {
                       className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                       type="password"
                       placeholder="Password"
+                      id="password"
+                      {...register("password", { required: true })}
                     ></input>
+                    {errors.password && (
+                      <p className="text-red-700 mt-1 text-sm">
+                        Password is required.
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div>

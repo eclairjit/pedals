@@ -1,11 +1,19 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 const Register = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const registerUser = (data) => {
+    console.log(data.email, data.username, data.phoneNumber); //TBR
+    navigate("/login");
+  };
 
   return (
     <section>
@@ -19,13 +27,14 @@ const Register = () => {
               Already have an account?{" "}
               <Link
                 to="/login"
-                title="Login"
+                title="login"
                 className="font-medium text-black transition-all duration-200 hover:underline"
               >
                 Login
               </Link>
             </p>
-            <form className="mt-8">
+
+            <form className="mt-8" onSubmit={handleSubmit(registerUser)}>
               <div className="space-y-5 min-w-80 md:min-w-96">
                 <div>
                   <label
@@ -41,8 +50,14 @@ const Register = () => {
                       type="text"
                       placeholder="Username"
                       id="username"
-                      onChange={(e) => setUsername(e.target.value)}
+                      {...register("username", { required: true })}
                     ></input>
+
+                    {errors.username && (
+                      <p className="text-red-700 mt-1 text-sm">
+                        Username is required.
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div>
@@ -59,8 +74,20 @@ const Register = () => {
                       type="email"
                       placeholder="Email"
                       id="email"
-                      onChange={(e) => setEmail(e.target.value)}
+                      {...register("email", {
+                        required: true,
+                        validate: {
+                          matchPattern: (value) =>
+                            /^[a-zA-Z0-9._%+-]+\@iitism.ac.in$/gm.test(value) ||
+                            "Please enter institute email.",
+                        },
+                      })}
                     ></input>
+                    {errors.email && (
+                      <p className="text-red-700 mt-1 text-sm">
+                        Please enter a valid institute email address.
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div>
@@ -77,8 +104,20 @@ const Register = () => {
                       type="text"
                       placeholder="Phone Number"
                       id="phoneNumber"
-                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      {...register("phoneNumber", {
+                        required: true,
+                        validate: {
+                          matchPattern: (value) =>
+                            /^\d{10}$/.test(value) ||
+                            "Please enter a valid phone number.",
+                        },
+                      })}
                     ></input>
+                    {errors.phoneNumber && (
+                      <p className="text-red-700 mt-1 text-sm">
+                        Please enter a valid phone number.
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div>
@@ -97,8 +136,13 @@ const Register = () => {
                       type="password"
                       placeholder="Password"
                       id="password"
-                      onChange={(e) => setPassword(e.target.value)}
+                      {...register("password", { required: true })}
                     ></input>
+                    {errors.password && (
+                      <p className="text-red-700 mt-1 text-sm">
+                        Password is required.
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div>
