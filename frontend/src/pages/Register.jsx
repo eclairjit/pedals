@@ -12,7 +12,7 @@ const Register = () => {
 
   const registerUser = (data) => {
     console.log(data.email, data.username, data.phoneNumber); //TBR
-    navigate("/login");
+    navigate("/home");
   };
 
   return (

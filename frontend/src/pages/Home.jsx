@@ -4,6 +4,10 @@ import { useForm } from "react-hook-form";
 const Home = () => {
   const { register, handleSubmit } = useForm();
 
+  const findCycles = (data) => {
+    console.log(data);
+  };
+
   return (
     <div
       className="w-screen h-screen bg-cover bg-center"
@@ -18,7 +22,10 @@ const Home = () => {
           <h1 className="text-white text-5xl w-full text-center p-2 font-semibold mt-5">
             Pedals
           </h1>
-          <form className="w-full flex flex-col items-center">
+          <form
+            onSubmit={handleSubmit(findCycles)}
+            className="w-full flex flex-col items-center"
+          >
             <div className="flex space-x-4 mt-8">
               <div className="mt-2 flex flex-col space-y-1">
                 <label htmlFor="startTime" className="text-white">
@@ -30,7 +37,7 @@ const Home = () => {
                   className="rounded-md py-1 px-2"
                   min="00:00"
                   max="23:59"
-                  value="00:00"
+                  step="00:15"
                   {...register("startTime", { required: true })}
                 />
               </div>
@@ -44,7 +51,6 @@ const Home = () => {
                   className="rounded-md py-1 px-2"
                   min="00:00"
                   max="23:59"
-                  value="00:00"
                   {...register("endTime", { required: true })}
                 />
               </div>
@@ -57,7 +63,7 @@ const Home = () => {
                 name="Select Location"
                 id="landmark"
                 className="w-[20vw] min-w-72 h-8 rounded-md px-2 pb-1 flex items-center border-none"
-                required
+                {...register("landmark", { required: true })}
               >
                 <option value="">Choose nearest landmark</option>
                 <option value="aquamarine">Aquamarine</option>
@@ -83,7 +89,7 @@ const Home = () => {
               <select
                 id="cycleType"
                 className="w-[20vw] min-w-72 h-8 rounded-md px-2 pb-1 flex items-center border-none"
-                required
+                {...register("cycleType", { required: true })}
               >
                 <option value="">Choose option</option>
                 <option value="gear">Geared</option>

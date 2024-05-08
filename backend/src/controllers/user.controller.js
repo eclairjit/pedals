@@ -28,15 +28,16 @@ const options = {
 };
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { username, email, phoneNumber, password } = req.body;
+  const { username, email, phoneNumber, password, upiId } = req.body;
 
   console.log(username); //TBR
   console.log(email); //TBR
   console.log(phoneNumber); //TBR
   console.log(password); //TBR
+  console.log(upiId); //TBR
 
   if (
-    [username, email, phoneNumber, password].some(
+    [username, email, phoneNumber, password, upiId].some(
       (field) => field?.trim() === ""
     )
   ) {
@@ -74,6 +75,7 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     phoneNumber,
     password,
+    upiId,
     avatar: avatar.url,
   });
 

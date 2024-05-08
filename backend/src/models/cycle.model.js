@@ -13,12 +13,16 @@ const cycleSchema = new mongoose.Schema(
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Lender",
-      required: true,
+      ref: "User",
     },
     rentRate: {
       type: Number,
       default: 0,
+    },
+    status: {
+      type: String,
+      enum: ["active", "inactive"],
+      default: "inactive",
     },
   },
   { timestamps: true }

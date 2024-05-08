@@ -28,19 +28,18 @@ const userSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    upiId: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     landmark: {
       type: String,
       enum: [
         "aquamarine",
         "jasper",
-        "sapphire",
-        "topaz",
-        "diamond",
-        "nlhc",
         "nac",
         "rosaline",
-        "ruby",
-        "gjlt",
         "heritage",
         "penman",
         "sac",
@@ -51,15 +50,13 @@ const userSchema = new mongoose.Schema(
       enum: ["active", "inactive"],
       default: "inactive",
     },
-    lender: {
+    cycle: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Lender",
+      ref: "Cycle",
     },
     avatar: {
       type: String,
       required: true,
-      default:
-        "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
     },
     refreshToken: {
       type: String,
