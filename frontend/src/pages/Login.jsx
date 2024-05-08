@@ -1,6 +1,8 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import axios from "axios";
+import { toast, Toaster } from "sonner";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -10,12 +12,34 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const loginUser = (data) => {
-    console.log(data.username); //TBR
+  const loginUser = async (data) => {
+    try {
+      const res = await axios.post("/api/v1/users/login", data);
+
+      console.log(res);
+
+      if (!res) {
+        console.log("Error in logging in user. ", error.message);
+        toast.error("Couldn't log in user.", {
+          duration: 3000,
+          position: "bottom-right",
+        });
+      }
+
+      console.log("User logged in successfully.");
+      navigate("/home");
+    } catch (error) {
+      console.log("Error in logging in user. ", error.message);
+      toast.error("Couldn't log in user.", {
+        duration: 3000,
+        position: "bottom-right",
+      });
+    }
   };
 
   return (
     <section>
+      <Toaster richColors position="bottom-right" />
       <div className="grid grid-cols-1 lg:grid-cols-2">
         <div className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
           <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md">

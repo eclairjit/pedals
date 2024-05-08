@@ -30,12 +30,6 @@ const options = {
 const registerUser = asyncHandler(async (req, res) => {
   const { username, email, phoneNumber, password, upiId } = req.body;
 
-  console.log(username); //TBR
-  console.log(email); //TBR
-  console.log(phoneNumber); //TBR
-  console.log(password); //TBR
-  console.log(upiId); //TBR
-
   if (
     [username, email, phoneNumber, password, upiId].some(
       (field) => field?.trim() === ""
