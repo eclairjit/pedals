@@ -1,26 +1,18 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import SearchContext from "../context/SearchContext";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const { register, handleSubmit } = useForm();
 
-  const timeDiffrence = (startTime, endTime) => {
-    const startHour = Number(startTime[0]) * 10 + Number(startTime[1]);
-    const startMinute = Number(startTime[3]) * 10 + Number(startTime[4]);
-    const endHour = Number(endTime[0]) * 10 + Number(endTime[1]);
-    const endMinute = Number(endTime[3]) * 10 + Number(endTime[4]);
+  const navigate = useNavigate();
 
-    const start = startHour * 60 + startMinute;
-    const end = endHour * 60 + endMinute;
-
-    if (start > end) {
-      console.log("Invalid time instances entered.");
-      return -1;
-    }
-  };
+  const { setSearch } = React.useContext(SearchContext);
 
   const findCycles = (data) => {
-    console.log(data.startTime[0]);
+    setSearch(data);
+    navigate("/cycles");
   };
 
   return (

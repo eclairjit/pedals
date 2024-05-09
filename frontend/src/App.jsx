@@ -1,13 +1,11 @@
-import { useState } from "react";
 import { Outlet } from "react-router-dom";
+import SearchContextProvider from "./context/SearchContextProvider";
 
 function App() {
-  const [loading, setLoading] = useState(true);
-
   return (
-    <>
+    <SearchContextProvider>
       <Outlet />
-    </>
+    </SearchContextProvider>
   );
 }
 
