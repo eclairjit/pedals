@@ -287,6 +287,55 @@ const getCurrentUser = asyncHandler(async (req, res) => {
     );
 });
 
+const getUserDetails = asyncHandler(async (req, res) => {
+  const userId = req.params.id;
+
+  if (!userId) {
+    throw new apiError(400, "User id is required.");
+  }
+
+  const user = await User.aggregate([
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectId(userId),
+      },
+    },
+    {
+      $lookup: {
+        from: "cycles",
+        localField: "_id",
+        foreignField: "owner",
+        as: "cycle",
+        pipeline: [
+          {
+            $project: {
+              _id: 1,
+              model: 1,
+              image: 1,
+              isActive: 1,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $addFields: {
+        cycle: {
+          $arrayElemAt: ["$cycle", 0],
+        },
+      },
+    },
+  ]);
+
+  if (!user) {
+    throw new apiError(404, "User not found.");
+  }
+
+  res
+    .status(200)
+    .json(new apiResponse(200, user, "User details found successfully."));
+});
+
 export {
   registerUser,
   loginUser,
@@ -294,4 +343,5 @@ export {
   refreshAccessToken,
   getCurrentUser,
   toggleCycleStatus,
+  getUserDetails,
 };
