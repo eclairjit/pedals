@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import aggregatePaginate from "mongoose-aggregate-paginate-v2";
 
 const cycleSchema = new mongoose.Schema(
   {
@@ -19,13 +20,22 @@ const cycleSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    status: {
+    isActive: {
+      type: Boolean,
+      default: false,
+    },
+    cycleType: {
       type: String,
-      enum: ["active", "inactive"],
-      default: "inactive",
+      enum: ["gear", "non-gear"],
+      required: true,
+    },
+    availableTill: {
+      type: String,
     },
   },
   { timestamps: true }
 );
+
+cycleSchema.plugin(aggregatePaginate);
 
 export const Cycle = mongoose.model("Cycle", cycleSchema);

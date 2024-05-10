@@ -69,14 +69,21 @@ const Login = () => {
                   <div className="mt-2">
                     <input
                       className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                      type="text"
-                      placeholder="Username"
-                      id="username"
-                      {...register("username", { required: true })}
+                      type="email"
+                      placeholder="Email"
+                      id="email"
+                      {...register("email", {
+                        required: true,
+                        validate: {
+                          matchPattern: (value) =>
+                            /^[a-zA-Z0-9._%+-]+\@iitism.ac.in$/gm.test(value) ||
+                            "Please enter institute email.",
+                        },
+                      })}
                     ></input>
                     {errors.username && (
                       <p className="text-red-700 mt-1 text-sm">
-                        Username is required.
+                        Institute email is required.
                       </p>
                     )}
                   </div>

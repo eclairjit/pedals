@@ -2,8 +2,10 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import { User } from "../models/user.model.js";
+import { Cycle } from "../models/cycle.model.js";
 import { uploadToCloudinary } from "../utils/cloudinary.js";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 const generateAccessAndRefreshToken = async (userId) => {
   try {
@@ -28,19 +30,17 @@ const options = {
 };
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { username, email, phoneNumber, password, upiId } = req.body;
+  const { fullName, email, phoneNumber, password, upiId } = req.body;
 
   if (
-    [username, email, phoneNumber, password, upiId].some(
+    [fullName, email, phoneNumber, password, upiId].some(
       (field) => field?.trim() === ""
     )
   ) {
     throw new apiError(400, "All fields are required.");
   }
 
-  const existingUser = await User.findOne({
-    $or: [{ email }, { username }],
-  });
+  const existingUser = await User.findOne({ email });
 
   if (existingUser) {
     throw new apiError(409, "User already exists.");
@@ -65,7 +65,7 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   const user = await User.create({
-    username,
+    fullName,
     email,
     phoneNumber,
     password,
@@ -87,9 +87,9 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 const loginUser = asyncHandler(async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
-  if (!username) {
+  if (!email) {
     throw new apiError(400, "Username is required.");
   }
 
@@ -97,7 +97,7 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new apiError(400, "Password is required.");
   }
 
-  const user = await User.findOne({ username });
+  const user = await User.findOne({ email });
 
   if (!user) {
     throw new apiError(404, "User does not exist!");
@@ -154,6 +154,65 @@ const logoutUser = asyncHandler(async (req, res) => {
     .clearCookie("accessToken", options)
     .clearCookie("refreshToken", options)
     .json(new apiResponse(200, {}, "User logged out successfully."));
+});
+
+const toggleCycleStatus = asyncHandler(async (req, res) => {
+  const id = req.user_id;
+  const availableTill = req.body?.availableTill;
+
+  if (!availableTill) {
+    throw new apiError(400, "Available till time is required.");
+  }
+
+  const cycle = await User.aggregate([
+    {
+      $match: {
+        _id: mongoose.Types.ObjectId(id),
+      },
+    },
+    {
+      $lookup: {
+        from: "cycles",
+        localField: "_id",
+        foreignField: "owner",
+        as: "cycle",
+        pipeline: [
+          {
+            $project: {
+              _id: 1,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $addFields: {
+        cycle: {
+          $arrayElemAt: ["$cycle", 0],
+        },
+      },
+    },
+  ]);
+
+  const cycle_id = cycle.cycle._id;
+
+  const userCycle = await Cycle.findById(cycle_id);
+
+  await Cycle.findByIdAndUpdate(cycle_id, {
+    $set: {
+      isActive: !userCycle.isActive,
+    },
+  });
+
+  await Cycle.findByIdAndUpdate(cycle_id, {
+    $set: {
+      availableTill: availableTill,
+    },
+  });
+
+  res
+    .status(200)
+    .json(new apiResponse(200, {}, "Cycle status toggled successfully."));
 });
 
 const refreshAccessToken = asyncHandler(async (req, res) => {
@@ -234,4 +293,5 @@ export {
   logoutUser,
   refreshAccessToken,
   getCurrentUser,
+  toggleCycleStatus,
 };

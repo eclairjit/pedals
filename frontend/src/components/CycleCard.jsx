@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const CycleCard = ({ model, rentRate, landmark, owner }) => {
   return (
@@ -17,9 +18,9 @@ const CycleCard = ({ model, rentRate, landmark, owner }) => {
           <h2>Landmark: {landmark}</h2>
           <h2>Owner: {owner}</h2>
           <div className="mt-2">
-            <button className="bg-black text-white py-1 w-full rounded hover:bg-blue-600 duration-200">
+            <Link className="bg-black text-white py-1 w-full rounded hover:bg-blue-600 duration-200">
               Book
-            </button>
+            </Link>
           </div>
         </div>
       </div>

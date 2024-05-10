@@ -74,18 +74,13 @@ const Home = () => {
               >
                 <option value="">Choose nearest landmark</option>
                 <option value="aquamarine">Aquamarine</option>
-                <option value="jasper">jasper</option>
-                <option value="sapphire">Sapphire</option>
-                <option value="topaz">Topaz</option>
-                <option value="diamond">Diamond</option>
-                <option value="nlhc">NLHC</option>
+                <option value="jasper">Jasper</option>
                 <option value="nac">NAC</option>
                 <option value="rosaline">Rosaline</option>
-                <option value="ruby">Ruby</option>
-                <option value="gjlt">GJLT</option>
                 <option value="heritage">Heritage Building</option>
                 <option value="penman">Penman Auditorium</option>
                 <option value="sac">SAC</option>
+                <option value="library">Central Library</option>
               </select>
             </div>
 

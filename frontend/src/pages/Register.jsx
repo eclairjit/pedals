@@ -71,24 +71,24 @@ const Register = () => {
               <div className="space-y-5 min-w-80 md:min-w-96">
                 <div>
                   <label
-                    htmlFor="username"
+                    htmlFor="fullName"
                     className="text-base font-medium text-gray-900"
                   >
                     {" "}
-                    Username{" "}
+                    Full Name{" "}
                   </label>
                   <div className="mt-2">
                     <input
                       className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                       type="text"
-                      placeholder="Username"
-                      id="username"
-                      {...register("username", { required: true })}
+                      placeholder="Full Name"
+                      id="fullName"
+                      {...register("fullName", { required: true })}
                     ></input>
 
                     {errors.username && (
                       <p className="text-red-700 mt-1 text-sm">
-                        Username is required.
+                        Full Name is required.
                       </p>
                     )}
                   </div>

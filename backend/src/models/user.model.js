@@ -1,22 +1,20 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import aggregatePaginate from "mongoose-aggregate-paginate-v2";
 
 const userSchema = new mongoose.Schema(
   {
-    username: {
+    fullName: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
-      lowercase: true,
     },
     email: {
       type: String,
       required: true,
       unique: true,
       trim: true,
-      lowercase: true,
     },
     password: {
       type: String,
@@ -43,16 +41,8 @@ const userSchema = new mongoose.Schema(
         "heritage",
         "penman",
         "sac",
+        "library",
       ],
-    },
-    status: {
-      type: String,
-      enum: ["active", "inactive"],
-      default: "inactive",
-    },
-    cycle: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Cycle",
     },
     avatar: {
       type: String,
@@ -80,7 +70,7 @@ userSchema.methods.generateAccessToken = function () {
   return jwt.sign(
     {
       _id: this._id,
-      username: this.username,
+      fullName: this.fullName,
       email: this.email,
     },
     process.env.ACCESS_TOKEN_SECRET,
@@ -101,5 +91,7 @@ userSchema.methods.generateRefreshToken = function () {
     }
   );
 };
+
+userSchema.plugin(aggregatePaginate);
 
 export const User = mongoose.model("User", userSchema);
