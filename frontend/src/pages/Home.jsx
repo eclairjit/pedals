@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import SearchContext from "../context/SearchContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link, useParams } from "react-router-dom";
+import axios from "axios";
 
 const Home = () => {
   const { register, handleSubmit } = useForm();
@@ -15,6 +16,18 @@ const Home = () => {
     navigate("/cycles");
   };
 
+  let userId;
+
+  const getCurrentUser = async () => {
+    const res = await axios.get("/api/v1/users/current-user");
+    console.log(res.data.data._id);
+    userId = res.data.data._id;
+  };
+
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
+
   return (
     <div
       className="w-screen h-screen bg-cover bg-center"
@@ -24,6 +37,17 @@ const Home = () => {
         )`,
       }}
     >
+      <nav className="fixed top-0 w-screen h-12 md:h-16 bg-white drop-shadow-lg flex justify-between p-2 items-center">
+        <div>Logo</div>
+        <div>
+          <Link to={`/user/${userId}`}>
+            <button className="bg-black px-3 py-1 text-white rounded hover:bg-blue-600 duration-150">
+              Profile
+            </button>
+          </Link>
+        </div>
+      </nav>
+
       <div className="w-full h-full flex justify-center items-center">
         <div className="w-[60vw] h-[60vh] min-w-80 max-w-md min-h-96 bg-gray-200 rounded-md backdrop-filter backdrop-blur bg-opacity-10 ">
           <h1 className="text-white text-5xl w-full text-center p-2 font-semibold mt-5">
@@ -100,7 +124,7 @@ const Home = () => {
               </select>
             </div>
             <div className="mt-8 w-full flex justify-center">
-              <button className="bg-black text-white px-4 py-2 rounded-md w-[20vw] min-w-72 hover:bg-blue-300 hover:text-gray-900 duration-200">
+              <button className="bg-black text-white px-4 py-2 rounded-md w-[20vw] min-w-72 hover:bg-blue-800 duration-150 text-lg">
                 Find
               </button>
             </div>
