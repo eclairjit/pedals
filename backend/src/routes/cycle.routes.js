@@ -12,7 +12,7 @@ const router = Router();
 router
   .route("/upload-cycle-details")
   .post(authToken, upload.single("cycleImage"), uploadCycleDetails);
-router.route("/get-cycles").get(getCycles);
+router.route("/get-cycles").get(authToken, getCycles);
 router.route("/:cycleId").get(getCycleById);
 
 export default router;

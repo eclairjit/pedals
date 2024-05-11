@@ -158,57 +158,18 @@ const logoutUser = asyncHandler(async (req, res) => {
 
 const toggleCycleStatus = asyncHandler(async (req, res) => {
   const id = req.user_id;
-  const availableTill = req.body?.availableTill;
+  const { landmark, availableTill, rentRate } = req.body;
 
-  if (!availableTill) {
-    throw new apiError(400, "Available till time is required.");
-  }
-
-  const cycle = await User.aggregate([
+  await Cycle.findOneAndUpdate(
+    { owner: id },
     {
-      $match: {
-        _id: mongoose.Types.ObjectId(id),
+      $set: {
+        landmark: landmark || "",
+        rentRate: rentRate || 0,
+        isActive: !isActive || false,
       },
-    },
-    {
-      $lookup: {
-        from: "cycles",
-        localField: "_id",
-        foreignField: "owner",
-        as: "cycle",
-        pipeline: [
-          {
-            $project: {
-              _id: 1,
-            },
-          },
-        ],
-      },
-    },
-    {
-      $addFields: {
-        cycle: {
-          $arrayElemAt: ["$cycle", 0],
-        },
-      },
-    },
-  ]);
-
-  const cycle_id = cycle.cycle._id;
-
-  const userCycle = await Cycle.findById(cycle_id);
-
-  await Cycle.findByIdAndUpdate(cycle_id, {
-    $set: {
-      isActive: !userCycle.isActive,
-    },
-  });
-
-  await Cycle.findByIdAndUpdate(cycle_id, {
-    $set: {
-      availableTill: availableTill,
-    },
-  });
+    }
+  );
 
   res
     .status(200)

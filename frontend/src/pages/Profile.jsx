@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axio from "axios";
+import axios from "axios";
 import { useForm } from "react-hook-form";
 
 const Profile = () => {
@@ -10,7 +10,7 @@ const Profile = () => {
   let userDetails;
 
   const getUserDetails = async () => {
-    userDetails = await axio.get(userId);
+    userDetails = await axios.get(`/users/${userId}`);
 
     if (!userDetails) {
       console.log("User not found.");
@@ -20,8 +20,8 @@ const Profile = () => {
     console.log(userDetails);
   };
 
-  const toggleCycleStatus = (data) => {
-    await;
+  const toggleCycleStatus = async (data) => {
+    await axios.post("/users//toggle-cycle-status", data);
   };
 
   const [toggle, setToggle] = useState(false);
