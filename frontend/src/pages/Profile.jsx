@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useLoaderData } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
 
 const Profile = () => {
   const { userId } = useParams();
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({});
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const [toggle, setToggle] = useState(false);
+
+  const value = localStorage.getItem("toggle") === true ? true : false;
+  const [toggle, setToggle] = useState(value);
 
   const getUserDetails = async () => {
     try {
@@ -35,6 +37,7 @@ const Profile = () => {
 
   const toggleCycleStatus = async (data) => {
     try {
+      console.log(data);
       await axios.post("/api/v1/users/toggle-cycle-status", data);
       toast.success("Cycle status toggled successfully.", {
         duration: 3000,
@@ -58,18 +61,18 @@ const Profile = () => {
         >
           <div className="flex space-x-2">
             <label
-              htmlFor="endTime"
+              htmlFor="availableTill"
               className="text-black text-md font-semibold my-auto"
             >
               Available Till
             </label>
             <input
               type="time"
-              id="availableTime"
+              id="availableTill"
               className="rounded-md py-1 px-2 bg-while w-20"
               min="00:00"
               max="23:59"
-              {...register("availableTime", { required: true })}
+              {...register("availableTill", { required: true })}
             />
           </div>
           <div className="mt-4">
@@ -154,6 +157,7 @@ const Profile = () => {
 
   return (
     <div className="max-w-4xl flex items-center h-auto lg:h-screen flex-wrap mx-auto my-32 lg:my-0">
+      <Toaster richColors position="bottom-right" />
       <div
         id="profile"
         className="w-full lg:w-3/5 rounded-lg lg:rounded-l-lg lg:rounded-r-none shadow-2xl bg-white opacity-75 mx-6 lg:mx-0"
@@ -185,6 +189,7 @@ const Profile = () => {
                   className="sr-only peer"
                   onChange={() => {
                     setToggle((prev) => !prev);
+                    localStorage.setItem("toggle", toggle);
                   }}
                 />
                 <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
@@ -194,7 +199,6 @@ const Profile = () => {
           {lenderFormDisplay(toggle)}
           {!data.hasOwnProperty("cycle") && (
             <section>
-              <Toaster richColors position="bottom-right" />
               <div className="grid grid-cols-1 lg:grid-cols-2">
                 <div className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
                   <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md">

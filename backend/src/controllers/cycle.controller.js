@@ -68,46 +68,81 @@ const uploadCycleDetails = asyncHandler(async (req, res) => {
 const getCycles = asyncHandler(async (req, res) => {
   const { landmark, cycleType } = req.body;
 
-  console.log("End time: ", endTime); // TBR
   console.log("Landmark: ", landmark); // TBR
   console.log("Cycle type: ", cycleType); // TBR
 
-  if ([endTime, landmark, cycleType].some((field) => field?.trim === "")) {
+  if ([landmark, cycleType].some((field) => field?.trim === "")) {
     throw new apiError(400, "All fields are required.");
   }
 
-  const cycles = await Cycle.aggregate([
-    {
-      $match: {
-        isActive: false,
-        cycleType: cycleType,
-        landmark: landmark,
-      },
-    },
-    {
-      $lookup: {
-        from: "users",
-        localField: "owner",
-        foreignField: "_id",
-        as: "owner",
-        pipeline: [
-          {
-            $project: {
-              _id: 1,
-              fullName: 1,
-            },
-          },
-        ],
-      },
-    },
-    {
-      $addFields: {
-        owner: {
-          $arrayElemAt: ["$owner", 0],
+  let cycles;
+
+  if (cycleType === "both") {
+    cycles = await Cycle.aggregate([
+      {
+        $match: {
+          isActive: false,
+          landmark: landmark,
         },
       },
-    },
-  ]);
+      {
+        $lookup: {
+          from: "users",
+          localField: "owner",
+          foreignField: "_id",
+          as: "owner",
+          pipeline: [
+            {
+              $project: {
+                _id: 1,
+                fullName: 1,
+              },
+            },
+          ],
+        },
+      },
+      {
+        $addFields: {
+          owner: {
+            $arrayElemAt: ["$owner", 0],
+          },
+        },
+      },
+    ]);
+  } else {
+    cycles = await Cycle.aggregate([
+      {
+        $match: {
+          isActive: false,
+          cycleType: cycleType,
+          landmark: landmark,
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "owner",
+          foreignField: "_id",
+          as: "owner",
+          pipeline: [
+            {
+              $project: {
+                _id: 1,
+                fullName: 1,
+              },
+            },
+          ],
+        },
+      },
+      {
+        $addFields: {
+          owner: {
+            $arrayElemAt: ["$owner", 0],
+          },
+        },
+      },
+    ]);
+  }
 
   if (!cycles) {
     throw new apiError(500, "Could not fetch cycles.");
