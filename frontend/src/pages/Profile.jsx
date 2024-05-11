@@ -1,8 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import axio from "axios";
 
 const Profile = () => {
   const { userId } = useParams();
+
+  let userDetails;
+
+  const getUserDetails = async () => {
+    userDetails = await axio.get(userId);
+
+    if (!userDetails) {
+      console.log("User not found.");
+      exit(1);
+    }
+
+    console.log(userDetails);
+  };
+
+  useEffect(() => {
+    getUserDetails();
+  }, []);
 
   return (
     <div className="max-w-4xl flex items-center h-auto lg:h-screen flex-wrap mx-auto my-32 lg:my-0">
@@ -18,7 +36,7 @@ const Profile = () => {
             }}
           ></div>
 
-          <h1 className="text-3xl font-bold pt-8 lg:pt-0">Your Name</h1>
+          <h1 className="text-3xl font-bold pt-8 lg:pt-0">{userId}</h1>
           <div className="mx-auto lg:mx-0 w-4/5 pt-3 border-b-2 border-black opacity-25"></div>
           <p class="pt-4 text-base font-bold flex items-center justify-center lg:justify-start">
             Email: asdasd@gmail.com
