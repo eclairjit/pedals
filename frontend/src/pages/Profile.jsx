@@ -34,7 +34,19 @@ const Profile = () => {
   }, []);
 
   const toggleCycleStatus = async (data) => {
-    await axios.post("/api/v1/users/toggle-cycle-status", data);
+    try {
+      await axios.post("/api/v1/users/toggle-cycle-status", data);
+      toast.success("Cycle status toggled successfully.", {
+        duration: 3000,
+        position: "bottom-right",
+      });
+    } catch (error) {
+      console.log("Error in toggling cycle status.", error);
+      toast.error("Cycle status couldn't be toggled.", {
+        duration: 3000,
+        position: "bottom-right",
+      });
+    }
   };
 
   const lenderFormDisplay = (toggle) => {
@@ -105,7 +117,7 @@ const Profile = () => {
 
       formData.append("model", data.model);
       formData.append("cycleType", data.cycleType);
-      formData.append("cycleImage", data.image[0]);
+      formData.append("cycleImage", data.cycleImage[0]);
 
       const res = await axios.post(
         "/api/v1/cycle/upload-cycle-details",
@@ -246,7 +258,7 @@ const Profile = () => {
                         <div>
                           <div className="flex items-center justify-between">
                             <label
-                              htmlFor="image"
+                              htmlFor="cycleImage"
                               className="text-base font-medium text-gray-900"
                             >
                               {" "}
@@ -260,7 +272,7 @@ const Profile = () => {
                               id="cycleImage"
                               {...register("cycleImage", { required: true })}
                             ></input>
-                            {errors.image && (
+                            {errors.cycleImage && (
                               <p className="text-red-700 mt-1 text-sm">
                                 Image is required.
                               </p>
