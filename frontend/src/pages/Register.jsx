@@ -29,7 +29,7 @@ const Register = () => {
       console.log(res.status);
 
       if (!res) {
-        console.log("Error in registering user. ", error.message);
+        console.log("Error in registering user. ", errors.message);
         toast.error("Couldn't register user.", {
           duration: 3000,
           position: "bottom-right",
