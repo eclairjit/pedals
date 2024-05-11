@@ -19,10 +19,9 @@ const uploadCycleDetails = asyncHandler(async (req, res) => {
     throw new apiError(401, "Cycle already exists");
   }
 
-  const { model, rentRate, cycleType } = req.body;
+  const { model, cycleType } = req.body;
 
   console.log("Cycle model: ", model); // TBR
-  console.log("Cycle rent rate: ", rentRate); // TBR
 
   if (!model || !cycleType) {
     throw new apiError(400, "Model and cycleType are required.");
@@ -46,7 +45,6 @@ const uploadCycleDetails = asyncHandler(async (req, res) => {
     model,
     cycleType,
     owner: req.user._id,
-    rentRate: rentRate ? rentRate : 0,
     image: image.url,
   });
 

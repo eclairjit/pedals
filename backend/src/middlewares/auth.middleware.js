@@ -9,8 +9,6 @@ const authToken = asyncHandler(async (req, res, next) => {
       req.cookies?.accessToken ||
       req.header("Authorization")?.replace("Bearer ", "");
 
-    console.log("Token: ", token); // TBR
-
     if (!token) {
       throw new apiError(401, "Unauthorized access.");
     }
@@ -28,7 +26,6 @@ const authToken = asyncHandler(async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    console.log("Inside authToken catch block"); // TBR
     throw new apiError(401, "Error: Invalid access token.");
   }
 });
