@@ -29,6 +29,19 @@ const cycleSchema = new mongoose.Schema(
       enum: ["gear", "non-gear"],
       required: true,
     },
+    landmark: {
+      type: String,
+      enum: [
+        "aquamarine",
+        "jasper",
+        "nac",
+        "rosaline",
+        "heritage",
+        "penman",
+        "sac",
+        "library",
+      ],
+    },
     availableTill: {
       type: String,
     },

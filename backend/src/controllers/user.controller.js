@@ -251,8 +251,6 @@ const getCurrentUser = asyncHandler(async (req, res) => {
 const getUserDetails = asyncHandler(async (req, res) => {
   const userId = req.params.id;
 
-  console.log(`User id: ${userId}`);
-
   if (!userId) {
     throw new apiError(400, "User id is required.");
   }
