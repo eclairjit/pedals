@@ -3,6 +3,7 @@ import CycleCard from "../components/CycleCard";
 import axios from "axios";
 import { toast, Toaster } from "sonner";
 import { useSelector } from "react-redux";
+import { timeDifference } from "../utils/timeDifference";
 
 const Cycles = () => {
   const [data, setData] = useState([]);
@@ -30,15 +31,18 @@ const Cycles = () => {
   return (
     <div className="w-screen h-screen flex flex-wrap justify-center gap-4 items-center mt-6">
       <Toaster richColors position="bottom-right" />
-      {data.map((cycle) => (
-        <CycleCard
-          key={cycle._id}
-          model={cycle.model}
-          rentRate={cycle.rentRate}
-          landmark={cycle.landmark}
-          owner={cycle.owner.fullName}
-        />
-      ))}
+      {data.map(
+        (cycle) =>
+          timeDifference(search.endTime, cycle.availableTill) !== -1 && (
+            <CycleCard
+              key={cycle._id}
+              model={cycle.model}
+              rentRate={cycle.rentRate}
+              landmark={cycle.landmark}
+              owner={cycle.owner.fullName}
+            />
+          )
+      )}
     </div>
   );
 };
