@@ -4,11 +4,9 @@ import ToggleContextProvider from "./context/ToggleContextProvider";
 
 function App() {
   return (
-    <SearchContextProvider>
-      <ToggleContextProvider>
-        <Outlet />
-      </ToggleContextProvider>
-    </SearchContextProvider>
+    <>
+      <Outlet />
+    </>
   );
 }
 

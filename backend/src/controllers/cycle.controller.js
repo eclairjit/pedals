@@ -68,9 +68,6 @@ const uploadCycleDetails = asyncHandler(async (req, res) => {
 const getCycles = asyncHandler(async (req, res) => {
   const { landmark, cycleType } = req.body;
 
-  console.log("Landmark: ", landmark); // TBR
-  console.log("Cycle type: ", cycleType); // TBR
-
   if ([landmark, cycleType].some((field) => field?.trim === "")) {
     throw new apiError(400, "All fields are required.");
   }
@@ -81,7 +78,7 @@ const getCycles = asyncHandler(async (req, res) => {
     cycles = await Cycle.aggregate([
       {
         $match: {
-          isActive: false,
+          isActive: true,
           landmark: landmark,
         },
       },
@@ -113,7 +110,7 @@ const getCycles = asyncHandler(async (req, res) => {
     cycles = await Cycle.aggregate([
       {
         $match: {
-          isActive: false,
+          isActive: true,
           cycleType: cycleType,
           landmark: landmark,
         },
@@ -144,11 +141,13 @@ const getCycles = asyncHandler(async (req, res) => {
     ]);
   }
 
+  console.log(cycles);
+
   if (!cycles) {
     throw new apiError(500, "Could not fetch cycles.");
   }
 
-  res
+  return res
     .status(200)
     .json(new apiResponse(200, cycles, "Cycles fetched successfully."));
 });
