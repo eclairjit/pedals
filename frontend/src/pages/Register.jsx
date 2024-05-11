@@ -17,7 +17,7 @@ const Register = () => {
     try {
       const formData = new FormData();
 
-      formData.append("username", data.username);
+      formData.append("fullName", data.fullName);
       formData.append("email", data.email);
       formData.append("phoneNumber", data.phoneNumber);
       formData.append("upiId", data.upiId);

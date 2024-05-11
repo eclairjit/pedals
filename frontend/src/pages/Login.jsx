@@ -19,7 +19,7 @@ const Login = () => {
       console.log(res);
 
       if (!res) {
-        console.log("Error in logging in user. ", error.message);
+        console.log("Error in logging in user. ", errors.message);
         toast.error("Couldn't log in user.", {
           duration: 3000,
           position: "bottom-right",
@@ -60,11 +60,11 @@ const Login = () => {
               <div className="space-y-5 min-w-80 md:min-w-96">
                 <div>
                   <label
-                    htmlFor="username"
+                    htmlFor="email"
                     className="text-base font-medium text-gray-900"
                   >
                     {" "}
-                    Username{" "}
+                    Email{" "}
                   </label>
                   <div className="mt-2">
                     <input
