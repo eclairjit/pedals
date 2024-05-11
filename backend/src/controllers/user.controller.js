@@ -48,17 +48,11 @@ const registerUser = asyncHandler(async (req, res) => {
 
   const avatarLocalPath = req.file?.path;
 
-  console.log("avatarLocalPath: ", avatarLocalPath); //TBR
-
   if (!avatarLocalPath) {
     throw new apiError(400, "Avatar local path not found.");
   }
 
-  console.log("Before upploading to cloudinary."); //TBR
-
   const avatar = await uploadToCloudinary(avatarLocalPath);
-
-  console.log("After uploading to cloudinary. avatar: ", avatar); //TBR
 
   if (!avatar) {
     throw new apiError(400, "Could not upload avatar to cloudinary.");
@@ -250,6 +244,8 @@ const getCurrentUser = asyncHandler(async (req, res) => {
 
 const getUserDetails = asyncHandler(async (req, res) => {
   const userId = req.params.id;
+
+  console.log(`User id: ${userId}`);
 
   if (!userId) {
     throw new apiError(400, "User id is required.");
