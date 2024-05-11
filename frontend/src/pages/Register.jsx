@@ -17,7 +17,7 @@ const Register = () => {
     try {
       const formData = new FormData();
 
-      formData.append("username", data.username);
+      formData.append("fullName", data.fullName);
       formData.append("email", data.email);
       formData.append("phoneNumber", data.phoneNumber);
       formData.append("upiId", data.upiId);
@@ -29,7 +29,7 @@ const Register = () => {
       console.log(res.status);
 
       if (!res) {
-        console.log("Error in registering user. ", error.message);
+        console.log("Error in registering user. ", errors.message);
         toast.error("Couldn't register user.", {
           duration: 3000,
           position: "bottom-right",

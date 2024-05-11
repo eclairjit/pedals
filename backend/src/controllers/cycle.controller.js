@@ -11,13 +11,21 @@ const uploadCycleDetails = asyncHandler(async (req, res) => {
     throw new apiError(401, "User not logged in.");
   }
 
-  const { model, rentRate } = req.body;
+  const existingCycle = await Cycle.findOne({ owner: req.user._id });
+
+  console.log("existingCycle", existingCycle); // TBR
+
+  if (existingCycle) {
+    throw new apiError(401, "Cycle already exists");
+  }
+
+  const { model, rentRate, cycleType } = req.body;
 
   console.log("Cycle model: ", model); // TBR
   console.log("Cycle rent rate: ", rentRate); // TBR
 
-  if (!model) {
-    throw new apiError(400, "Model is required.");
+  if (!model || !cycleType) {
+    throw new apiError(400, "Model and cycleType are required.");
   }
 
   const cycleImagelocalPath = req.file?.path;
@@ -36,6 +44,7 @@ const uploadCycleDetails = asyncHandler(async (req, res) => {
 
   const cycle = await Cycle.create({
     model,
+    cycleType,
     owner: req.user._id,
     rentRate: rentRate ? rentRate : 0,
     image: image.url,
@@ -59,7 +68,7 @@ const uploadCycleDetails = asyncHandler(async (req, res) => {
 });
 
 const getCycles = asyncHandler(async (req, res) => {
-  const { endTime, landmark, cycleType } = req.body;
+  const { landmark, cycleType } = req.body;
 
   console.log("End time: ", endTime); // TBR
   console.log("Landmark: ", landmark); // TBR
