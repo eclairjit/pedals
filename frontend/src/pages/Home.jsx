@@ -16,12 +16,11 @@ const Home = () => {
     navigate("/cycles");
   };
 
-  let userId;
+  const [userId, setUserId] = useState("");
 
   const getCurrentUser = async () => {
     const res = await axios.get("/api/v1/users/current-user");
-    console.log(res.data.data._id);
-    userId = res.data.data._id;
+    setUserId(res.data.data._id);
   };
 
   useEffect(() => {
