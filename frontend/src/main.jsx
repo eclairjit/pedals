@@ -15,6 +15,9 @@ import {
   Cycles,
   Profile,
   CycleLenderDetails,
+  PayApp,
+  PaymentSuccess,
+  OtpVerified,
 } from "./pages";
 
 const router = createBrowserRouter(
@@ -26,6 +29,10 @@ const router = createBrowserRouter(
       <Route path="cycles" element={<Cycles />} />
       <Route path="cycle/:cycleId" element={<CycleLenderDetails />} />
       <Route path="user/:userId" element={<Profile />} />
+      <Route path="payment" element={<PayApp />} />
+      <Route path="paymentSuccess" element={<PaymentSuccess />} />
+      <Route path="verification" element={<OtpVerified />} />
+
     </Route>
   )
 );

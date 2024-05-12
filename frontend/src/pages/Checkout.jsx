@@ -25,5 +25,5 @@ const Checkout = () => {
 
   return <div>Checkout</div>;
 };
-
+// export {timeDifference};
 export default Checkout;

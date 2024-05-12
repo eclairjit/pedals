@@ -4,21 +4,34 @@ import { User } from "../models/user.model.js";
 import nodemailer from "nodemailer";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { Cycle } from "../models/cycle.model.js";
+import { Lease } from "../models/lease.model.js";
 const sendOTPLender = asyncHandler(async (req, res) => {
   try {
-    const { email } = req.body;
+    const { _id } = req.body;
     console.log(req.body);
-    const checkUserPresent = await User.findOne({ email: email });
-    console.log(checkUserPresent);
-    if (!checkUserPresent) {
+    const lender = await User.findOne({ _id:_id });
+    console.log(lender);
+    if (!lender) {
       return res.status(401).json({
         success: false,
         message: "User Not found",
       });
     }
-    // console.log(checkUserPresent._id);
-    const lender = await User.findOne(checkUserPresent._id);
-
+    // console.log(lender._id);
+    // if(!_id){
+    //   res.status(400).json({
+    //     success:false,
+    //     message:"USer not found",
+    //   })
+    // }
+    // const lender = await User.findOne({checkUserPresent._id});
+    if(!lender){
+      res.status(400).json({
+        success:false,
+        message:"USer not found",
+      })
+    }
+    let email=lender.email;
     let otp = otpGenerator.generate(6, {
       upperCaseAlphabets: false,
       lowerCaseAlphabets: false,
@@ -33,7 +46,7 @@ const sendOTPLender = asyncHandler(async (req, res) => {
     }
     const otpPayload = { email, otp };
     const otpBody = await OTP.create(otpPayload);
-    // console.log(otpBody);
+    console.log(otpBody);
 
     let transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
@@ -61,7 +74,7 @@ const sendOTPLender = asyncHandler(async (req, res) => {
                   Your OTP for verification is: <strong>${otp}</strong>
               </p>
               <p style="font-size: 16px; color: #333333;">
-                  Please use this OTP to verify your account using this link {http://localhost:5400/api/v1/verify/Lender/${checkUserPresent._id}}.
+                  Please use this OTP to verify your account using this link {http://localhost:5400/api/v1/verify/Lender/${lender._id}}.
               </p>
           </td>
       </tr>
@@ -79,8 +92,8 @@ const sendOTPLender = asyncHandler(async (req, res) => {
       success: true,
       message: "OTP sent successfully",
       otp,
-    });
-  } catch (error) {
+    });}
+   catch (error) {
     console.log(error.message);
     return res.status(500).json({ success: false, error: error.message });
   }
@@ -200,6 +213,7 @@ const verifyOTPReceiver = asyncHandler(async (req, res) => {
     const { otp } = req.body;
     console.log(otp); //TBR
     const lender = await User.findOne({ _id: user_id });
+    
     console.log(lender); //TBR
     const user = await OTP.findOne({ email: lender.email });
 
@@ -209,12 +223,14 @@ const verifyOTPReceiver = asyncHandler(async (req, res) => {
         message: "No receiver.",
       });
     }
+    // const lease=await Lease.findOne({user_id});
     if (!otp || !user.otp || user.otp != otp) {
       res.status(400).json({ success: false, error: "INVALID OTP" });
     } else {
       res.status(200).json({ success: true, message: "USER VERIFIED" });
       const lenderCycle = await Cycle.findOne(user_id);
       lenderCycle.isActive = 1;
+      
     }
   } catch (error) {
     console.log(error.message);
