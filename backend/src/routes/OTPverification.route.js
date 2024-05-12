@@ -10,4 +10,5 @@ router.route("/lenderEmail").post(sendOTPLender);
 router.route("/receiverEmail").post(sendOTPReceiver);
 router.route("/lender/:id").post(verifyOTPLender);
 router.route("/receiver/:id").post(verifyOTPReceiver);
+
 export default router;

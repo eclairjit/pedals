@@ -4,5 +4,17 @@ import Home from "./Home";
 import Cycles from "./Cycles";
 import Profile from "./Profile";
 import CycleUserDetails from "./CycleUserDetails";
-
-export { Register, Login, Home, Cycles, Profile, CycleUserDetails };
+import PayApp from "./PaymentDetails";
+import PaymentSuccess from "./PaymentSuccess";
+import OtpVerified from "./OtpVerification";
+export {
+  Register,
+  Login,
+  Home,
+  Cycles,
+  Profile,
+  CycleLenderDetails,
+  PayApp,
+  PaymentSuccess,
+  OtpVerified,
+};

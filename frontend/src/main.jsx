@@ -15,6 +15,9 @@ import {
   Cycles,
   Profile,
   CycleUserDetails,
+  PayApp,
+  PaymentSuccess,
+  OtpVerified,
 } from "./pages";
 import { store } from "./app/store.js";
 import { Provider } from "react-redux";

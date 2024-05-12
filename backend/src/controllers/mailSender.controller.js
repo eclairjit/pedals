@@ -1,6 +1,7 @@
 import otpGenerator from "otp-generator";
 import { OTP } from "../models/OTPgenerator.model.js";
 import { User } from "../models/user.model.js";
+import { Lease } from "../models/lease.model.js";
 import nodemailer from "nodemailer";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { Cycle } from "../models/cycle.model.js";
@@ -8,18 +9,21 @@ import { apiError } from "../utils/apiError.js";
 const sendOTPLender = asyncHandler(async (req, res) => {
   try {
     const { _id } = req.body;
-    console.log("Inside mailSender: ", req.body);
+    console.log(req.body);
 
     if (!_id) {
       throw new apiError(400, "Cycle id not found.");
     }
 
-    const lender = await User.findById({ _id });
-
+    const lender = await User.findOne({ _id: _id });
+    console.log(lender);
     if (!lender) {
-      throw new apiError(400, "Lender not found.");
+      return res.status(401).json({
+        success: false,
+        message: "User Not found",
+      });
     }
-
+    let email = lender.email;
     let otp = otpGenerator.generate(6, {
       upperCaseAlphabets: false,
       lowerCaseAlphabets: false,
@@ -35,7 +39,8 @@ const sendOTPLender = asyncHandler(async (req, res) => {
     }
     const otpPayload = { email, otp };
     const otpBody = await OTP.create(otpPayload);
-    // console.log(otpBody);
+
+    console.log(otpBody);
 
     let transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
@@ -64,7 +69,7 @@ const sendOTPLender = asyncHandler(async (req, res) => {
                   Your OTP for verification is: <strong>${otp}</strong>
               </p>
               <p style="font-size: 16px; color: #333333;">
-                  Please use this OTP to verify your account using this link {http://localhost:5400/api/v1/verify/Lender/${checkUserPresent._id}}.
+                  Please use this OTP to verify your account using this link {http://localhost:5400/api/v1/verify/Lender/${lender._id}}.
               </p>
           </td>
       </tr>
