@@ -4,26 +4,28 @@ import { User } from "../models/user.model.js";
 import nodemailer from "nodemailer";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { Cycle } from "../models/cycle.model.js";
+import { apiError } from "../utils/apiError.js";
 const sendOTPLender = asyncHandler(async (req, res) => {
   try {
-    const { email } = req.body;
+    const { _id } = req.body;
     console.log(req.body);
-    const checkUserPresent = await User.findOne({ email: email });
-    console.log(checkUserPresent);
-    if (!checkUserPresent) {
-      return res.status(401).json({
-        success: false,
-        message: "User Not found",
-      });
+
+    if (!_id) {
+      throw apiError(400, "Cycle id not found.");
     }
-    // console.log(checkUserPresent._id);
-    const lender = await User.findOne(checkUserPresent._id);
+
+    const lender = await User.findById({ _id });
+
+    if (!lender) {
+      throw apiError(400, "Lender not found.");
+    }
 
     let otp = otpGenerator.generate(6, {
       upperCaseAlphabets: false,
       lowerCaseAlphabets: false,
       specialChars: false,
     });
+
     let result = await OTP.findOne({ otp: otp });
     while (result) {
       otp = otpGenerator.generate(6, {
@@ -45,9 +47,10 @@ const sendOTPLender = asyncHandler(async (req, res) => {
         pass: process.env.MAIL_PASS,
       },
     });
+
     let info = await transporter.sendMail({
       from: "www.pedals.com-Pedals",
-      to: email,
+      to: lender.email,
       subject: "Verify your otp",
       html: `    <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
       <tr>
@@ -74,6 +77,7 @@ const sendOTPLender = asyncHandler(async (req, res) => {
       </tr>
   </table>`,
     });
+
     await transporter.sendMail(info);
     res.status(200).json({
       success: true,

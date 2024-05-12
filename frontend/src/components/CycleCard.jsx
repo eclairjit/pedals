@@ -1,9 +1,30 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast, Toaster } from "sonner";
+import axios from "axios";
 
-const CycleCard = ({ model, rentRate, landmark, owner }) => {
+const CycleCard = ({ _id, model, rentRate, landmark, owner }) => {
+  const navigate = useNavigate();
+
+  const handleOnClick = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("/api/v1/verify/lenderEmail", _id);
+
+      if (!res) {
+        toast.error("Could not book cycle.");
+      }
+
+      navigate(`/cycle/${_id}`);
+    } catch (error) {
+      console.log(error);
+      toast.error("Could not book cycle.");
+    }
+  };
+
   return (
     <section className="flex justify-center my-2">
+      <Toaster richColors position="bottom-right" />
       <div className="flex-col w-64 shadow-xl rounded-md bg-white">
         <div>
           <img
@@ -18,9 +39,12 @@ const CycleCard = ({ model, rentRate, landmark, owner }) => {
           <h2 className="w-full flex justify-center">Landmark: {landmark}</h2>
           <h2 className="w-full flex justify-center">Owner: {owner}</h2>
           <div className="w-full flex justify-center my-3">
-            <Link className="bg-black text-white py-1 px-2 w-14 text-center rounded hover:bg-blue-600 duration-200">
+            <button
+              onClick={handleOnClick}
+              className="bg-black text-white py-1 px-2 w-14 text-center rounded hover:bg-blue-600 duration-200"
+            >
               Book
-            </Link>
+            </button>
           </div>
         </div>
       </div>

@@ -14,7 +14,7 @@ import {
   Home,
   Cycles,
   Profile,
-  CycleLenderDetails,
+  CycleUserDetails,
 } from "./pages";
 import { store } from "./app/store.js";
 import { Provider } from "react-redux";
@@ -26,7 +26,7 @@ const router = createBrowserRouter(
       <Route path="login" element={<Login />} />
       <Route path="home" element={<Home />} />
       <Route path="cycles" element={<Cycles />} />
-      <Route path="cycle/:cycleId" element={<CycleLenderDetails />} />
+      <Route path="cycle/:cycleId" element={<CycleUserDetails />} />
       <Route path="user/:userId" element={<Profile />} />
     </Route>
   )

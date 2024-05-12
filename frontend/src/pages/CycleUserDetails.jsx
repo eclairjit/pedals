@@ -1,7 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-const CycleLenderDetails = () => {
+const CycleUserDetails = () => {
+  const { cycleId } = useParams();
+  const [data, setData] = useState({});
+
+  const getCycleDetails = async () => {
+    try {
+      const res = await axios.get(`/api/v1/cycle/${cycleId}`);
+
+      if (!res) {
+        console.log("User not found.");
+        return null;
+      }
+
+      setData(res.data.data[0]);
+      console.log(res.data.data[0]);
+    } catch (error) {
+      console.log("Could not get user details.", error);
+    }
+  };
+
+  useEffect(() => {
+    getCycleDetails();
+  }, []);
+
   return (
     <>
       <div className="w-screen h-screen flex justify-center items-center">
@@ -29,4 +52,4 @@ const CycleLenderDetails = () => {
   );
 };
 
-export default CycleLenderDetails;
+export default CycleUserDetails;

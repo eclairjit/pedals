@@ -3,6 +3,6 @@ import Login from "./Login";
 import Home from "./Home";
 import Cycles from "./Cycles";
 import Profile from "./Profile";
-import CycleLenderDetails from "./CycleLenderDetails";
+import CycleUserDetails from "./CycleUserDetails";
 
-export { Register, Login, Home, Cycles, Profile, CycleLenderDetails };
+export { Register, Login, Home, Cycles, Profile, CycleUserDetails };

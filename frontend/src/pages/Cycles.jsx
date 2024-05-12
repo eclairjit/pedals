@@ -36,6 +36,7 @@ const Cycles = () => {
           timeDifference(search.endTime, cycle.availableTill) !== -1 && (
             <CycleCard
               key={cycle._id}
+              _id={cycle._id}
               model={cycle.model}
               rentRate={cycle.rentRate}
               landmark={cycle.landmark}
