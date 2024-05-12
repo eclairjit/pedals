@@ -8,16 +8,16 @@ import { apiError } from "../utils/apiError.js";
 const sendOTPLender = asyncHandler(async (req, res) => {
   try {
     const { _id } = req.body;
-    console.log(req.body);
+    console.log("Inside mailSender: ", req.body);
 
     if (!_id) {
-      throw apiError(400, "Cycle id not found.");
+      throw new apiError(400, "Cycle id not found.");
     }
 
     const lender = await User.findById({ _id });
 
     if (!lender) {
-      throw apiError(400, "Lender not found.");
+      throw new apiError(400, "Lender not found.");
     }
 
     let otp = otpGenerator.generate(6, {
