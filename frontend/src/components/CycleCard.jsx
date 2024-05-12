@@ -9,7 +9,7 @@ const CycleCard = ({ _id, model, rentRate, landmark, owner }) => {
   const handleOnClick = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/api/v1/verify/lenderEmail", _id);
+      const res = await axios.post("/api/v1/verify/lenderEmail", { _id });
 
       if (!res) {
         toast.error("Could not book cycle.");
