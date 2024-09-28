@@ -1,47 +1,62 @@
-# Pedals
+# Pedals | C2C Cycle Renting Platform
 
-**Problem:**
+## Introduction
+Pedals is a full-stack web application that facilitates a peer-to-peer cycle renting service. It enables users to rent out their cycles or lease cycles from others in a seamless, user-friendly environment. The platform focuses on security, efficiency, and ease of use, providing users with secure payment options and seamless user experiences.
 
-Students in the college face transportation issues, for example, when you have an extra class suddenly scheduled in the afternoon and you have to walk from your hostel to the lecture hall in the scorching sun. Is there any effective solution to this?
+## Tech Stack
+- Frontend: React, Redux Toolkit, Tailwind CSS
+- Backend: Node.js, Express.js, MongoDB
+- Image Management: Cloudinary
+- Payments: Razorpay
+- Authentication: JSON Web Tokens (JWT)
+- Other Tools: React Hook Form, Multer
 
-**Solution:**
+## Features
+- User Authentication: Secure login and signup using JWT with access and refresh tokens.
+- Cycle Listings: Users can post and view available cycles for rent.
+- Payments Integration: Seamless and secure payment system using Razorpay for processing transactions.
+- Image Management: Cloudinary is used for storing and retrieving cycle images.
+- Efficient Backend: MongoDB with aggregation pipelines ensures smooth data querying and filtering.
+- RESTful API: All backend operations are managed via RESTful APIs, ensuring separation between frontend and backend.
 
-An 'effective' cycle rental service. But where do the cycles come from?
+## Installation and Setup
+- Clone the repository:
+```bash
+git clone https://github.com/eclairjit/pedals.git
+```
 
-Final years can donate the cycles they used once they end their college days.
+- Navigate to the project folder:
+```bash
+cd pedals
+```
 
-There are many unused cycles which are kept as junk by the authority, cycles which no longer have any owners
+- Install dependencies for both frontend and backend:
+```bash
+cd client && npm install
+cd ../server && npm install
+```
 
-But is this enough to serve the needs of so many students? Maybe not. We have another addition to this list:
+- Set up environment variables:
+  - Create a .env file in the root of the server directory.
+  - Add the following:
+  ```env
+  MONGO_URI=<Your MongoDB URI>
+  JWT_SECRET=<Your JWT secret>
+  CLOUDINARY_API_KEY=<Your Cloudinary API key>
+  CLOUDINARY_API_SECRET=<Your Cloudinary API secret>
+  RAZORPAY_KEY_ID=<Your Razorpay key ID>
+  RAZORPAY_KEY_SECRET=<Your Razorpay key secret>
+  ```
 
-Allowing students who already own bicycles to rent them out to others on campus can be a brilliant addition to our cycle rental service. This approach not only expands the availability of bicycles but also provides an opportunity for students to earn extra income.
+- Run the application:
+  - Backend: Start the Node.js server
+  ```bash
+  cd server && npm run dev
+  ```
+  - Frontend: Start the React client
+  ```bash
+  cd client && npm run dev
+  ```
 
-**What are we going to make**
-
-A web app.
-
-- Users need to login using college email id, to restrict the service within the campus.
-
-- Users can choose from cycles available at a particular time according to their needs (the location they are in, geared/non-geared, etc.)
-
-- Students can list their own cycles for rentals.
-
-- Payment gateway within the website to facilitate faster and secure payments.
-
-- An effective cycle return mechanism through OTP.
-
-- Cost of rent will depend upon time of rental.
-
-Tech stack:
-
-1. React.js for frontend
-2. Node.js and Express.js for backend
-3. Tailwind CSS for the UI
-4. Cloudinary for managing images
-5. MongoDB as database
-6. Mongoose as the data modeller for the application
-
-<br>
-
-`Team: Powerpuff Boys`\
-`Team Members: Yash Anand, Kavya Priyam & Jit Mitra`
+## Contributing
+Feel free to submit pull requests or create issues for feature requests or bugs. Contributions are welcome!
